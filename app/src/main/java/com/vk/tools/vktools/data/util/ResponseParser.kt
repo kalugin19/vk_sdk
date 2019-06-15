@@ -3,6 +3,7 @@ package com.vk.tools.vktools.data.util
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.vk.tools.vktools.data.entities.Base
+import com.vk.tools.vktools.data.entities.BaseUsers
 import com.vk.tools.vktools.data.entities.Friend
 
 object ResponseParser {
@@ -12,4 +13,11 @@ object ResponseParser {
         val response = Gson().fromJson<Base>(body)
         return response.response.items
     }
+
+    @Throws(JsonSyntaxException::class)
+    fun parseUsers(body: String): List<Friend> {
+        val response = Gson().fromJson<BaseUsers>(body)
+        return response.response
+    }
+
 }

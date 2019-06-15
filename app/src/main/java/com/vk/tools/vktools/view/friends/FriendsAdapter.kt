@@ -79,7 +79,7 @@ class FriendsAdapter : PagedListAdapter<Friend, RecyclerView.ViewHolder>(object 
             post?.photo?.let {
                 Glide.with(itemView.context).load(it).into(itemView.friend_photo)
             }
-            itemView.friend_name.text = post?.lastName + " " + position
+            itemView.friend_name.text = post?.firstName
         }
 
         companion object {
