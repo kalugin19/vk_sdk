@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-    <ProgressBar
-            android:id="@+id/progress"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="56dp"
-            android:layout_gravity="center"
-            android:layout_height="56dp"/>
-</LinearLayout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="status" type="com.vk.tools.vktools.data.base.Status"/>
+        <import type="android.view.View"/>
+        <import type="com.vk.tools.vktools.data.base.Status"/>
+    </data>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+        <ProgressBar
+                android:visibility="@{status == Status.RUNNING ? View.VISIBLE : View.GONE}"
+                android:id="@+id/progress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="56dp"
+                android:layout_gravity="center"
+                android:layout_height="56dp"/>
+    </LinearLayout>
+</layout>

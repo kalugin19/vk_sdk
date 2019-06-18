@@ -1,18 +1,16 @@
 package com.vk.tools.vktools.view.friends
 
-import android.arch.paging.PagedListAdapter
+import android.databinding.ViewDataBinding
 import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
 import com.vk.tools.vktools.R
 import com.vk.tools.vktools.data.base.NetworkState
 import com.vk.tools.vktools.data.entities.Friend
-import kotlinx.android.synthetic.main.item_friend.view.*
+import com.vk.tools.vktools.databinding.ItemFriendBinding
+import com.vk.tools.vktools.databinding.ItemProgressBinding
 
-class FriendsAdapter : PagedListAdapter<Friend, RecyclerView.ViewHolder>(object : DiffUtil.ItemCallback<Friend>() {
+class FriendsAdapter : DataBoundPagedListAdapter<Friend, ViewDataBinding>(object : DiffUtil.ItemCallback<Friend>() {
     override fun areContentsTheSame(oldItem: Friend, newItem: Friend): Boolean {
         return oldItem == newItem
     }
@@ -21,24 +19,35 @@ class FriendsAdapter : PagedListAdapter<Friend, RecyclerView.ViewHolder>(object 
         return oldItem.id == newItem.id
     }
 }) {
+    override fun bindPartially(binding: ViewDataBinding) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun bind(binding: ViewDataBinding, item: Friend?) {
+        if (binding is ItemFriendBinding) {
+            binding.friend = item
+        } else {
+            (binding as ItemProgressBinding).status = networkState?.status
+        }
+    }
 
     private var networkState: NetworkState? = null
 
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (getItemViewType(position)) {
-            R.layout.item_friend -> (holder as FriendHolder).bind(position, getItem(position))
-            R.layout.item_progress -> (holder as NetworkStateItemViewHolder).bindTo(
-                networkState
-            )
+    override fun onBindViewHolder(holder: DataBoundViewHolder<ViewDataBinding>, position: Int) {
+        if (holder.binding is ItemProgressBinding) {
+            bind(holder.binding, null)
+        } else {
+            super.onBindViewHolder(holder, position)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            R.layout.item_friend -> FriendHolder.create(parent)
-            R.layout.item_progress -> NetworkStateItemViewHolder.create(parent)
-            else -> throw IllegalArgumentException("unknown view type $viewType")
+
+    override fun createBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
+        return if (viewType == R.layout.item_friend) {
+            ItemFriendBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        } else {
+            ItemProgressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         }
     }
 
@@ -70,25 +79,5 @@ class FriendsAdapter : PagedListAdapter<Friend, RecyclerView.ViewHolder>(object 
         } else if (hasExtraRow && previousState != newNetworkState) {
             notifyItemChanged(itemCount - 1)
         }
-    }
-
-
-    class FriendHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        fun bind(position: Int, post: Friend?) {
-            post?.photo?.let {
-                Glide.with(itemView.context).load(it).into(itemView.friend_photo)
-            }
-            itemView.friend_name.text = post?.firstName
-        }
-
-        companion object {
-            fun create(parent: ViewGroup): FriendHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_friend, parent, false)
-                return FriendHolder(view)
-            }
-        }
-
     }
 }
