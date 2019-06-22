@@ -1,7 +1,7 @@
 package com.vk.tools.vktools.view.base
 
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 
@@ -13,9 +13,9 @@ import javax.inject.Inject
 abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @set:Inject
-    internal var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>? = null
+    internal var dispatchingAndroidInjector: DispatchingAndroidInjector<androidx.fragment.app.Fragment>? = null
 
-    override fun supportFragmentInjector(): DispatchingAndroidInjector<Fragment>? {
+    override fun supportFragmentInjector(): DispatchingAndroidInjector<androidx.fragment.app.Fragment>? {
         return dispatchingAndroidInjector
     }
 }

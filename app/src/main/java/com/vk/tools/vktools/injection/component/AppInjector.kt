@@ -3,10 +3,10 @@ package com.vk.tools.vktools.injection.component
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 import com.vk.tools.vktools.VkToolsApplication
 import com.vk.tools.vktools.injection.Injectable
 import com.vk.tools.vktools.view.base.BaseActivity

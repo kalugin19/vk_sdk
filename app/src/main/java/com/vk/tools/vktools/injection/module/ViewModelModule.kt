@@ -1,7 +1,7 @@
 package com.vk.tools.vktools.injection.module
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.vk.tools.vktools.injection.scope.ViewModelKey
 import com.vk.tools.vktools.view_model.FriendsViewModel
 import com.vk.tools.vktools.view_model.VkToolViewModelFactory

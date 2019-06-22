@@ -8,7 +8,7 @@ import com.vk.sdk.VKSdk
 import com.vk.sdk.VKServiceActivity
 import com.vk.tools.vktools.R
 import com.vk.tools.vktools.view.base.BaseActivity
-import com.vk.tools.vktools.view.friends.FriendsFragment
+import com.vk.tools.vktools.view.friends.MainFriendsFragment
 
 
 class MainActivity : BaseActivity() {
@@ -46,8 +46,8 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun showFriends() {
+    private fun showFriends() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, FriendsFragment.getInstance()).commit()
+            .replace(R.id.container, MainFriendsFragment.getInstance()).commit()
     }
 }

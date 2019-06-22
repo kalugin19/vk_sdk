@@ -1,7 +1,9 @@
 package com.vk.tools.vktools.data
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.paging.PositionalDataSource
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.PositionalDataSource
+import com.vk.sdk.VKAccessToken
+import com.vk.sdk.VKSdk
 import com.vk.sdk.api.*
 import com.vk.sdk.api.methods.VKApiFriends
 import com.vk.sdk.api.methods.VKApiUsers
@@ -9,6 +11,7 @@ import com.vk.sdk.api.model.VKApiModel
 import com.vk.tools.vktools.data.base.NetworkState
 import com.vk.tools.vktools.data.entities.Friend
 import com.vk.tools.vktools.data.util.ResponseParser
+import java.lang.Exception
 import java.util.concurrent.Executor
 
 class FriendsDataSource(private val retryExecutor: Executor) : PositionalDataSource<Friend>() {
@@ -28,13 +31,22 @@ class FriendsDataSource(private val retryExecutor: Executor) : PositionalDataSou
         }
     }
 
-    private fun getUsers(ids: List<Long>): VKRequest? {
-        val req = VKApiUsers().get(VKParameters.from(VKApiConst.USER_IDS, ids,
+    private fun getUsers(size: Int, position: Int): VKRequest? {
+        val req = VKApiUsers().search(VKParameters.from(
+            VKApiConst.COUNT, if (size < 10) {
+                size
+            } else 10,
             VKApiConst.FIELDS, "photo_100",
-            VKApiConst.LANG, "ru"
+            VKApiConst.OFFSET, position,
+            VKApiConst.LANG, "ru",
+            VKApiConst.VERSION, "5.92",
+            VKApiConst.FIELDS, "photo_100, last_seen, ",
+            "from_list", "friends"
             ))
         return req;
     }
+
+
 
     private fun getFriends(size: Int, position: Int): VKRequest? {
         return VKApiFriends().get(
@@ -82,7 +94,7 @@ class FriendsDataSource(private val retryExecutor: Executor) : PositionalDataSou
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Friend>) {
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
-        getFriends(params.requestedLoadSize, params.requestedStartPosition)
+        getUsers(params.requestedLoadSize, params.requestedStartPosition)
             ?.executeSyncWithListener(
                 object :
                     VKRequest.VKRequestListener() {
@@ -90,53 +102,20 @@ class FriendsDataSource(private val retryExecutor: Executor) : PositionalDataSou
                         retry = null
                         networkState.postValue(NetworkState.LOADED)
                         initialLoad.postValue(NetworkState.LOADED)
-                        response?.responseString?.let {
-                            try {
-                                val friends = ResponseParser.parseFriends(it)
-                                val ids =  friends.toTypedArray().map {
-                                    it.id
+                        response?.responseString.let { it1->
+                            it1?.let { it2 ->
+                                try {
+                                    val users = ResponseParser.parseUsers(it2)
+                                    callback.onResult(
+                                        users,
+                                        params.requestedStartPosition,
+                                        params.requestedLoadSize
+                                    )
+                                } catch (e: Exception){
+                                    print(e)
                                 }
-                                getUsers(ids)!!.executeWithListener(object: VKRequest.VKRequestListener(){
-                                    override fun attemptFailed(
-                                        request: VKRequest?,
-                                        attemptNumber: Int,
-                                        totalAttempts: Int
-                                    ) {
-                                        super.attemptFailed(request, attemptNumber, totalAttempts)
-                                    }
-
-
-
-                                    override fun onProgress(
-                                        progressType: VKRequest.VKProgressType?,
-                                        bytesLoaded: Long,
-                                        bytesTotal: Long
-                                    ) {
-                                        super.onProgress(progressType, bytesLoaded, bytesTotal)
-                                    }
-
-                                    override fun onError(error: VKError?) {
-                                        super.onError(error)
-                                    }
-
-                                    override fun onComplete(response: VKResponse?) {
-                                        response?.responseString.let { it1->
-                                            it1?.let { it2 ->
-                                                val users = ResponseParser.parseUsers(it2)
-                                                callback.onResult(
-                                                    users,
-                                                    params.requestedStartPosition,
-                                                    params.requestedLoadSize
-                                                )
-                                            }
-                                        }
-                                    }
-                                })
-                            } catch (e: Exception) {
-                                networkState.postValue(NetworkState.error(e.message))
                             }
                         }
-//                        super.onComplete(response)
                     }
 
                     override fun onError(error: VKError?) {

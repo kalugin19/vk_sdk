@@ -1,16 +1,17 @@
 package com.vk.tools.vktools.view.friends
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.annotation.Nullable
-import android.support.v7.widget.LinearLayoutManager
+import androidx.annotation.Nullable
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.vk.tools.vktools.R
 import com.vk.tools.vktools.view.base.BaseFragment
+import com.vk.tools.vktools.view.base.FriendsItemDecoration
 import com.vk.tools.vktools.view_model.FriendsViewModel
 import kotlinx.android.synthetic.main.fragment_friends.view.*
 import javax.inject.Inject
@@ -36,6 +37,7 @@ class FriendsFragment : BaseFragment() {
         friendsAdapter = FriendsAdapter()
         view.list.layoutManager = LinearLayoutManager(activity)
         view.list.setHasFixedSize(true)
+        view.list.addItemDecoration(FriendsItemDecoration(resources.getDimensionPixelSize(R.dimen.dividerHeight)))
         view.list.adapter = friendsAdapter
         return view
     }

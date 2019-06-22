@@ -1,9 +1,9 @@
 package com.vk.tools.vktools.view_model
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Transformations
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.vk.tools.vktools.repositories.FriendsRepository
 import javax.inject.Inject
 

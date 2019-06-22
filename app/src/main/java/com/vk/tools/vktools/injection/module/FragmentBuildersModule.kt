@@ -1,6 +1,7 @@
 package com.vk.tools.vktools.injection.module
 
 import com.vk.tools.vktools.view.friends.FriendsFragment
+import com.vk.tools.vktools.view.friends.MainFriendsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -13,6 +14,9 @@ abstract class FragmentBuildersModule{
 
     @ContributesAndroidInjector
     abstract fun contributeFriendsFragment(): FriendsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeMainFriendsFragment(): MainFriendsFragment
 }
 //    @ContributesAndroidInjector
 //    abstract OldCounterFragment contributeOldCounterFragment();

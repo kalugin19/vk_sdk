@@ -1,8 +1,8 @@
 package com.vk.tools.vktools.repositories
 
-import android.arch.lifecycle.Transformations
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PagedList
+import androidx.lifecycle.Transformations
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.vk.tools.vktools.data.FriendsDataSourceFactory
 import com.vk.tools.vktools.data.base.Listing
 import com.vk.tools.vktools.data.entities.Friend

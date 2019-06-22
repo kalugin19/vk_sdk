@@ -1,8 +1,8 @@
 package com.vk.tools.vktools.view.friends
 
-import android.arch.paging.PagedListAdapter
-import android.databinding.ViewDataBinding
-import android.support.v7.util.DiffUtil
+import androidx.paging.PagedListAdapter
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import android.view.ViewGroup
 
 /**
@@ -10,7 +10,7 @@ import android.view.ViewGroup
  *
  * @param <T> Type of the items in the list
  * @param <V> The type of the ViewDataBinding
-</V></T> */
+ * */
 abstract class DataBoundPagedListAdapter<T, V : ViewDataBinding> protected constructor(diffCallback: DiffUtil.ItemCallback<T>) :
     PagedListAdapter<T, DataBoundViewHolder<V>>(diffCallback) {
 

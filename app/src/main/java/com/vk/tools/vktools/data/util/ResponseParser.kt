@@ -17,7 +17,7 @@ object ResponseParser {
     @Throws(JsonSyntaxException::class)
     fun parseUsers(body: String): List<Friend> {
         val response = Gson().fromJson<BaseUsers>(body)
-        return response.response
+        return response.response.items
     }
 
 }

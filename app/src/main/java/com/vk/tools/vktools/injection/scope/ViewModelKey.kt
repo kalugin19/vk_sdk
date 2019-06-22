@@ -1,6 +1,6 @@
 package com.vk.tools.vktools.injection.scope
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import dagger.MapKey
 
 import java.lang.annotation.*

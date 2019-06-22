@@ -5,7 +5,7 @@ import android.app.Application
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.support.multidex.MultiDex
+import androidx.multidex.MultiDex
 import com.vk.sdk.VKSdk
 import com.vk.tools.vktools.injection.component.AppInjector
 import dagger.android.*
